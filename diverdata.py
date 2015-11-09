@@ -59,13 +59,13 @@ print diverdata
 #tijdzones compenseren
 meteo=meteo.tz_localize('UTC')
 meteo=meteo.tz_convert('Europe/Amsterdam')
-diverdata=diverdata.tz_localize('CET')
+diverdata=diverdata.tz_localize('CET', ambiguous='NaT')
 diverdata=diverdata.tz_convert('Europe/Amsterdam')
 #print meteo.index, 'meteo goede tijdzone'
 #print diverdata.index, 'diver goede tijdzone'
 print diverdata
 luchtdruk = meteo[14] / 9.80638
-#print 'luchtdruk', luchtdruk
+print 'luchtdruk', luchtdruk
 waterdruk = diverdata['Druk[cm]']/1000.0
 #print 'waterdruk', waterdruk
 #print luchtdruk.index
@@ -88,7 +88,7 @@ gecompenseerd.to_csv(divernummer + '_gecompenseerd.csv', index=True, sep=',')
 ####################################################################################################
 #plotten en plot opslaan
 
-#waterstanden
+#waterstanden met een probleem
 plt.figure(); gecompenseerd.plot(label='Waterstanden'); neerslag.plot(secondary_y=True, label='Neerslag'); #secondary_y=True, 
 plt.legend(loc='lower center', shadow=True, fontsize='x-large')
 ax = pylab.gca()
@@ -97,7 +97,7 @@ ax.right = neerslag.plot(secondary_y=True)
 ax.right.set_ylabel('$mm$') 
 plt.xlabel('Tijd')
 plt.title('Gemeten waterstand ' + divernummer)
-pylab.savefig('waterstandsplot_'+ divernummer + '.png')
+pylab.savefig(pad_plots + 'waterstandsplot_'+ divernummer + '.png')
 pylab.close()
 
 #plot geleidbaarheid
@@ -112,7 +112,7 @@ ax.right = neerslag.plot(secondary_y=True)
 ax.right.set_ylabel('$mm$') 
 plt.xlabel('Tijd')
 plt.title('Geleidbaarheid ' + divernummer)
-pylab.savefig('ECplot_'+ divernummer + '.png')
+pylab.savefig(pad_plots + 'ECplot_'+ divernummer + '.png')
 pylab.close()
 #print diverdata['Specifieke geleidbaarheid']
 
@@ -123,7 +123,7 @@ ax = pylab.gca()
 ax.set_ylabel('$microS/cm$')
 plt.xlabel('Tijd')
 plt.title('Geleidbaarheid')
-pylab.savefig('EC_spec_plot_' + divernummer + '.png')
+pylab.savefig(pad_plots + 'EC_spec_plot_' + divernummer + '.png')
 pylab.close()
 
 #neerslag
@@ -133,19 +133,18 @@ ax = pylab.gca()
 ax.set_ylabel('$mm$')
 plt.xlabel('Tijd')
 plt.title('Neerslag' + divernummer)
-pylab.savefig('neerslag_' + divernummer + '.png')
+pylab.savefig(pad_plots + 'neerslag_' + divernummer + '.png')
 pylab.close()
 
 #handmetingen
 print diverdata['EC ondiep (microS/cm)'].dropna()
 print diverdata['EC diep  (microS/cm)'].dropna()
 
-plt.figure(); diverdatadiverdata['EC ondiep (microS/cm)'].plot(style='k--'); diverdata['EC diep  (microS/cm)'].plot(style='k--');
 plt.legend(loc='lower center', shadow=True, fontsize='x-large')
 ax = pylab.gca()
 ax.set_ylabel('$mS/cm$')
 plt.xlabel('Tijd')
 plt.title('Handmetingen geleidbaarheid ' + divernummer)
-pylab.savefig('EChandmetingen_'+ divernummer + '.png')
+pylab.savefig(pad_plots + 'EChandmetingen_'+ divernummer + '.png')
 pylab.close()
 
