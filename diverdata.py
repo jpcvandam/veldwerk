@@ -28,7 +28,7 @@ def dateparser(dates):
 url = 'http://www.knmi.nl/klimatologie/uurgegevens/getdata_uur.cgi'
  
 # Bij uurgegevens kan er een carriage return (\r) tussen de kolommen zitten
-with open(pad_meteo+'uurgeg_235_20150820-20150922.txt','rb') as f:
+with open(pad_meteo+'KNMI_20151108_hourly.txt','rb') as f:
     text = f.read().translate(None,'\r')
     io = StringIO.StringIO(text)
     data = pd.read_csv(io,
@@ -40,13 +40,13 @@ with open(pad_meteo+'uurgeg_235_20150820-20150922.txt','rb') as f:
                          date_parser = datehour_parser)
     #print data
     meteo = data.resample('15T', fill_method='pad')
-#meteo = pd.read_csv(pad_meteo+'uurgeg_235_20150820-20150922.txt', parse_dates={'dates' : [1,2]}  skipinitialspace=True, index_col=[1,2])
-#print meteo
+meteo = pd.read_csv(pad_meteo+'KNMI_20151108_hourly.txt', parse_dates={'dates' : [1,2]},  skipinitialspace=True, index_col=[1,2])
+print meteo
 
 #sws_t2904_150922194909_T2904.csv
 #sws_t2905_150922194831_T2905.csv
-t2897 = pd.read_csv(werkmap +'sws_t2897_150922194951_T2897.csv', skiprows=63, index_col=[0], parse_dates = [0], date_parser = dateparser, decimal=',')#, dtype={'Specifieke geleidbaarheid':np.float64}, engine= 'c', encoding='utf-8')
-
+t2897 = pd.read_csv(werkmap +'sws_t2897_151030_T2897.csv', skiprows=63, index_col=[0], decimal=',', parse_dates = [0], date_parser = dateparser)#, dtype={'Specifieke geleidbaarheid':np.float64}, engine= 'c', encoding='utf-8')
+print t2897
 
 #tijdzones compenseren
 meteo=meteo.tz_localize('UTC')
