@@ -62,3 +62,10 @@ target/
 *.png
 *.xlsx
 *.txt
+*.CSV
+*.ZIP
+*.MON
+CSV/
+MON/
+Excel/
+Meteo_De_Kooy
