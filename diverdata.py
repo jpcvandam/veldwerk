@@ -39,19 +39,20 @@ with open(pad_meteo+meteobestand,'rb') as f:
     io = StringIO.StringIO(text)
     data = pd.read_csv(io,
                          header=None,
+                         skiprows=34,
                          skipinitialspace=True,
                          comment = '#',
                          index_col = 'Datum',
-                         parse_dates={'Datum': [1,2]},
+                         parse_dates={'Datum': [1,2]}, #kolommen in het meteobestand
                          date_parser = datehour_parser)
-    #print data
+    print data
     meteo = data.resample('15T', fill_method='pad')
-meteo = pd.read_csv(pad_meteo + meteobestand, parse_dates={'dates' : [1,2]},  skipinitialspace=True, index_col=[1,2])
+#meteo = pd.read_csv(pad_meteo + meteobestand, skiprows=34,  parse_dates={'dates' : [1,2]},  skipinitialspace=True, index_col=[1,2])
 print meteo
 
 #sws_t2904_150922194909_T2904.csv
 #sws_t2905_150922194831_T2905.csv
-diverdata = pd.read_csv(werkmap + diverbestand, skiprows=63, index_col=[0], decimal=',', parse_dates = [0], date_parser = dateparser)#, dtype={'Specifieke geleidbaarheid':np.float64}, engine= 'c', encoding='utf-8')
+diverdata = pd.read_csv(werkmap + diverbestand, skiprows=63, index_col=[0], decimal=',', parse_dates = [0])#, date_parser = dateparser)#, dtype={'Specifieke geleidbaarheid':np.float64}, engine= 'c', encoding='utf-8')
 print diverdata
 
 #tijdzones compenseren
