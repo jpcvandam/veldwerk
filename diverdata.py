@@ -11,6 +11,7 @@ import numpy as np
 import pylab
 import pytz
 import StringIO
+from pandas.io.date_converters import parse_date_time
 
 werkmap = '/home/john/Documenten/Afstuderen_Acacia_water/Data/Veldwerk/den_helder/Excel/'
 pad_meteo = '/home/john/Documenten/Afstuderen_Acacia_water/Data/Veldwerk/den_helder/Meteo_De_Kooy/'
@@ -47,18 +48,18 @@ with open(pad_meteo+meteobestand,'rb') as f:
                          date_parser = datehour_parser)
     print data
     meteo = data.resample('15T', fill_method='pad')
-#meteo = pd.read_csv(pad_meteo + meteobestand, skiprows=34,  parse_dates={'dates' : [1,2]},  skipinitialspace=True, index_col=[1,2])
+
 print meteo
 
 #sws_t2904_150922194909_T2904.csv
 #sws_t2905_150922194831_T2905.csv
-diverdata = pd.read_csv(werkmap + diverbestand, skiprows=63, index_col=[0], decimal=',', parse_dates = [0])#, date_parser = dateparser)#, dtype={'Specifieke geleidbaarheid':np.float64}, engine= 'c', encoding='utf-8')
+diverdata = pd.read_csv(werkmap + diverbestand, skiprows=63, decimal=',', index_col=[0], parse_dates = [0], date_parser = dateparser)#, dtype={'Specifieke geleidbaarheid':np.float64}, engine= 'c', encoding='utf-8')
 print diverdata
 
 #tijdzones compenseren
 meteo=meteo.tz_localize('UTC')
-diverdata=diverdata.tz_localize('CET')
 meteo=meteo.tz_convert('Europe/Amsterdam')
+diverdata=diverdata.tz_localize('CET')
 diverdata=diverdata.tz_convert('Europe/Amsterdam')
 #print meteo.index, 'meteo goede tijdzone'
 #print diverdata.index, 'diver goede tijdzone'
